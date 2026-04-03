@@ -43,7 +43,8 @@ RUN mkdir -p /run/sshd \
 RUN echo '* soft core unlimited' > /etc/security/limits.d/core.conf
 
 # Sysctl not hardened (CIS 3.x)
-RUN echo 'net.ipv4.ip_forward = 1' > /etc/sysctl.d/99-insecure.conf \
+RUN mkdir -p /etc/sysctl.d \
+    && echo 'net.ipv4.ip_forward = 1' > /etc/sysctl.d/99-insecure.conf \
     && echo 'net.ipv4.conf.all.accept_redirects = 1' >> /etc/sysctl.d/99-insecure.conf
 
 # No login banner
