@@ -321,4 +321,8 @@ All 3 phases must pass.
 
 ---
 
+Stuck? Consult [HINTS.md](HINTS.md) for troubleshooting.
+
+---
+
 *SDC Cyber Command — 2187 — LIEUTENANT JG EYES ONLY*

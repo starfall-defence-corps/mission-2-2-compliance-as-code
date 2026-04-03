@@ -1,5 +1,7 @@
 # Mission 2.2: Compliance as Code — Hints
 
+> Back to: [Briefing](BRIEFING.md) | [Exercises](EXERCISES.md) | [Checklist](../CHECKLIST.md)
+
 ## Troubleshooting
 
 **SSH issues**: Run `make setup` first. Check `docker ps` to verify containers are running.
