@@ -1,0 +1,295 @@
+# Mission 2.2: Compliance as Code — Exercises
+
+**Rank**: Lieutenant JG
+**Prerequisite**: Module 1 complete + Mission 2.1 (Weapon Handling Test)
+
+---
+
+## Phase 0: Activate Your Environment
+
+```bash
+make setup
+source venv/bin/activate
+```
+
+Verify 4 containers are running: `docker ps` should show cis-target, sdc-web, sdc-db, sdc-comms.
+
+---
+
+## Phase 1: Understanding CIS Benchmarks
+
+Before the obstacle course, you need to understand the framework.
+
+### What CIS Benchmarks Are
+
+CIS Benchmarks are industry-consensus security configuration standards maintained by the **Center for Internet Security**. They define measurable, repeatable security controls for operating systems, cloud platforms, applications, and network devices.
+
+Each control has:
+- A **control ID** (e.g., 5.2.7)
+- A **description** (e.g., "Ensure SSH MaxAuthTries is set to 4 or less")
+- A **rationale** (why this matters)
+- An **audit** procedure (how to check)
+- A **remediation** procedure (how to fix)
+- A **level** (Level 1 = basic, Level 2 = strict)
+
+### CIS Controls Relevant to This Mission
+
+| Control | Section | Description | Level |
+|---------|---------|-------------|-------|
+| 1.5.1 | Initial Setup | Restrict core dumps | L1 |
+| 1.7.1 | Initial Setup | Warning banner configured | L1 |
+| 3.3.2 | Network | ICMP redirects not accepted | L1 |
+| 5.1.8 | Access | Cron restricted to authorised users | L1 |
+| 5.2.4 | Access | SSH root login disabled | L1 |
+| 5.2.5 | Access | SSH password auth disabled | L1 |
+| 5.2.7 | Access | SSH MaxAuthTries 4 or less | L1 |
+| 5.2.13 | Access | SSH idle timeout configured | L1 |
+| 5.2.16 | Access | SSH LoginGraceTime 60s or less | L1 |
+| 6.1.3 | Maintenance | /etc/shadow permissions restricted | L1 |
+
+### Mapping Controls to Ansible Tasks
+
+Every CIS control maps to one or more Ansible tasks. The key insight: **CIS tells you WHAT, Ansible tells the system HOW.**
+
+```yaml
+# CIS 5.2.7 — Ensure SSH MaxAuthTries is set to 4 or less
+- name: "CIS 5.2.7 — Set SSH MaxAuthTries"
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?MaxAuthTries'
+    line: "MaxAuthTries 4"
+  notify: restart ssh
+  tags: [cis_5_2]
+```
+
+**Tags** are critical. They let you run specific controls:
+```bash
+ansible-playbook site.yml --tags cis_5_2    # Only SSH controls
+ansible-playbook site.yml --tags cis_6_1    # Only file permissions
+ansible-playbook site.yml                    # All controls
+```
+
+### What Lynis Is
+
+**Lynis** is a security auditing tool for Unix systems. It performs hundreds of individual tests and produces a **hardening index** (0-100). Higher is better.
+
+```bash
+# Run on a remote host via Ansible
+ansible cis-target -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
+```
+
+Output includes:
+```
+  Hardening index : 52 [##########          ]
+  Tests performed : 178
+  Plugins enabled : 0
+```
+
+**In production**, organisations use tools like **OpenSCAP** (NIST/DISA), **InSpec** (Chef), or commercial scanners (Tenable, Qualys) for automated CIS/STIG compliance scanning. Lynis serves the same educational purpose in our Docker lab.
+
+---
+
+## Phase 2: Obstacle Course — Compliance Range
+
+> **START YOUR TIMER**
+
+### Mission 1: Write the Role (15–20 min)
+
+**Location**: `workspace/obstacle-course/mission-1/`
+
+```bash
+cd workspace/obstacle-course/mission-1
+```
+
+1. **Read the 8 tests** at `tests/test_cis_hardening.py`. Each test maps to a CIS control.
+
+2. **Create the role**:
+   ```bash
+   ansible-galaxy init roles/cis_hardening
+   ```
+
+3. **Write tasks** in `roles/cis_hardening/tasks/main.yml`:
+   - Each task must implement a CIS control
+   - Each task must have a `tags` field with the CIS section (e.g., `tags: [cis_5_2]`)
+   - You need at least 5 tasks (some tests check multiple things in one task)
+
+4. **Apply the role**:
+   ```bash
+   ansible-playbook -i inventory.yml site.yml
+   ```
+
+5. **Run the tests**:
+   ```bash
+   pytest tests/ --hosts=ssh://cadet@localhost:2251 \
+     --ssh-identity-file=../../.ssh/cadet_key \
+     --ssh-config=../../.ssh/testinfra_ssh_config \
+     --sudo -v
+   ```
+
+6. **Iterate** until all 8 pass.
+
+### Mission 2: Write the Tests (15–20 min)
+
+**Location**: `workspace/obstacle-course/mission-2/`
+
+```bash
+cd workspace/obstacle-course/mission-2
+```
+
+1. **Read the role**: Examine `roles/compliance_baseline/tasks/main.yml` and `roles/compliance_baseline/defaults/main.yml`. The role claims to implement CIS controls, but it has **bugs**.
+
+2. **Apply the role**:
+   ```bash
+   ansible-playbook -i inventory.yml site.yml
+   ```
+
+3. **Write tests** at `tests/test_compliance_baseline.py`. Include:
+   - Basic checks: SSH service running, banner deployed, cron.allow exists
+   - CIS compliance checks: verify actual values match CIS requirements
+   - Find the bugs — at least 3 controls are misconfigured or missing
+
+4. **Run your tests**:
+   ```bash
+   pytest tests/test_compliance_baseline.py --hosts=ssh://cadet@localhost:2251 \
+     --ssh-identity-file=../../.ssh/cadet_key \
+     --ssh-config=../../.ssh/testinfra_ssh_config \
+     --sudo -v
+   ```
+
+5. **Expected result**: Basic tests pass. Compliance tests for buggy controls **fail**. That's correct — failing tests prove the bugs exist.
+
+> **STOP YOUR TIMER**
+
+| Time | Rating |
+|------|--------|
+| Under 35 min | Gold Standard |
+| 35–45 min | Compliant |
+| 45–55 min | Improving |
+| 55–70 min | Needs Work |
+| 70+ min | Audit Failed — retry |
+
+---
+
+## Phase 3: Main Mission — Compliance as Code
+
+**Location**: `workspace/main-mission/`
+
+```bash
+cd workspace/main-mission
+```
+
+Build a complete CIS Level 1 compliance solution for the fleet.
+
+### Step 1: Bring Your Role
+
+Copy your `fleet_hardening` role from Mission 1.5 (or recreate it):
+
+```bash
+mkdir -p roles
+cp -r /path/to/mission-1-5/workspace/roles/fleet_hardening roles/
+```
+
+### Step 2: Create Inventory
+
+Create `inventory/hosts.yml` and `inventory/group_vars/` for the fleet.
+
+| Node | OS | Port |
+|------|----|------|
+| sdc-web | Ubuntu 22.04 | 2221 |
+| sdc-db | Rocky Linux 9 | 2222 |
+| sdc-comms | Ubuntu 22.04 | 2223 |
+
+### Step 3: Create ansible.cfg and site.yml
+
+Same patterns as previous missions.
+
+### Step 4: Baseline Lynis Scan
+
+Before hardening, measure the current state:
+
+```bash
+ansible all -i inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
+```
+
+Record the hardening index for each node in `COMPLIANCE.md`.
+
+### Step 5: Extend Role with CIS Controls
+
+Add CIS Level 1 tasks to your role. At minimum:
+
+- SSH: MaxAuthTries, LoginGraceTime, ClientAliveInterval (CIS 5.2.x)
+- Files: /etc/shadow permissions (CIS 6.1.x)
+- Kernel: sysctl hardening — disable redirects (CIS 3.x)
+- Access: cron.allow, core dump limits (CIS 1.5.x, 5.1.x)
+- Banner: /etc/issue.net with warning message (CIS 1.7.x)
+
+**Tag every task** with its CIS section.
+
+### Step 6: Deploy and Rescan
+
+```bash
+ansible-playbook -i inventory/hosts.yml site.yml
+
+# Rescan
+ansible all -i inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
+```
+
+Record the new hardening index. You should see a significant improvement.
+
+### Step 7: Write Tests
+
+Create `tests/test_fleet_compliance.py` with **at least 10 test functions**:
+
+- SSH root login disabled
+- SSH password auth disabled
+- SSH MaxAuthTries set to 4
+- SSH idle timeout configured
+- Firewall active (both OS families)
+- MOTD or banner deployed
+- /etc/shadow permissions correct
+- Core dumps restricted
+- Sysctl hardened (IP forwarding, redirects)
+- Telnet removed from Debian nodes
+
+### Step 8: Create Molecule Configuration
+
+```bash
+mkdir -p molecule/default
+```
+
+Write `molecule/default/molecule.yml` using the pattern from Mission 2.1.
+
+### Step 9: Run Tests and Complete Report
+
+```bash
+# Run tests against all fleet nodes
+pytest tests/ \
+  --hosts=ssh://cadet@localhost:2221,ssh://cadet@localhost:2222,ssh://cadet@localhost:2223 \
+  --ssh-identity-file=../.ssh/cadet_key \
+  --ssh-config=../.ssh/testinfra_ssh_config \
+  --sudo -v
+```
+
+Complete `COMPLIANCE.md` with all Lynis scores and control statuses.
+
+### Step 10: Verify with ARIA
+
+```bash
+cd ../..   # Back to mission root
+make test
+```
+
+All 3 phases must pass.
+
+---
+
+## Further Reading
+
+- [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks) — Free PDF downloads (registration required)
+- [Lynis Documentation](https://cisofy.com/lynis/)
+- [OpenSCAP](https://www.open-scap.org/) — Enterprise-grade SCAP scanner used in production
+- [DISA STIGs](https://public.cyber.mil/stigs/) — DoD security baselines
+
+---
+
+*SDC Cyber Command — 2187 — LIEUTENANT JG EYES ONLY*

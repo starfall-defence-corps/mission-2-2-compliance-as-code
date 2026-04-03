@@ -1,0 +1,8 @@
+all:
+  children:
+    cis_targets:
+      hosts:
+        cis-target:
+          ansible_host: localhost
+          ansible_port: 2251
+          ansible_ssh_private_key_file: ../../.ssh/cadet_key

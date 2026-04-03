@@ -1,0 +1,93 @@
+services:
+  # Obstacle Course target
+  cis-target:
+    build:
+      context: .
+      dockerfile: Dockerfile.cis-target
+    container_name: cis-target
+    hostname: cis-target
+    privileged: true
+    cgroup: host
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - ./ssh-keys/authorized_keys:/home/cadet/.ssh/authorized_keys:ro
+    networks:
+      cis_net:
+        ipv4_address: 172.33.0.11
+    ports:
+      - "2251:22"
+
+  # Fleet nodes for main mission
+  sdc-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu
+    container_name: sdc-web
+    hostname: sdc-web
+    privileged: true
+    cgroup: host
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - ./ssh-keys/authorized_keys:/home/cadet/.ssh/authorized_keys:ro
+    networks:
+      cis_net:
+        ipv4_address: 172.33.0.21
+    ports:
+      - "2221:22"
+
+  sdc-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.rocky
+    container_name: sdc-db
+    hostname: sdc-db
+    privileged: true
+    cgroup: host
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - ./ssh-keys/authorized_keys:/home/cadet/.ssh/authorized_keys:ro
+    networks:
+      cis_net:
+        ipv4_address: 172.33.0.22
+    ports:
+      - "2222:22"
+
+  sdc-comms:
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu
+    container_name: sdc-comms
+    hostname: sdc-comms
+    privileged: true
+    cgroup: host
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - ./ssh-keys/authorized_keys:/home/cadet/.ssh/authorized_keys:ro
+    networks:
+      cis_net:
+        ipv4_address: 172.33.0.23
+    ports:
+      - "2223:22"
+
+networks:
+  cis_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.33.0.0/24

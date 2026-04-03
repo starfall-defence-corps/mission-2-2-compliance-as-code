@@ -1,0 +1,6 @@
+---
+- name: Apply CIS Level 1 hardening
+  hosts: cis_targets
+  become: true
+  roles:
+    - cis_hardening

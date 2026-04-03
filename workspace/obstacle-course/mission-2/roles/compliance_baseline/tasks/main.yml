@@ -1,0 +1,46 @@
+---
+# CIS Compliance Baseline — this role has bugs. Find them.
+
+- name: "CIS 5.2.x — Configure SSH settings"
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^#?MaxAuthTries', line: "MaxAuthTries {{ ssh_max_auth_tries }}" }
+    - { regexp: '^#?LoginGraceTime', line: "LoginGraceTime {{ ssh_login_grace_time }}" }
+    - { regexp: '^#?ClientAliveInterval', line: "ClientAliveInterval {{ ssh_client_alive_interval }}" }
+    - { regexp: '^#?ClientAliveCountMax', line: "ClientAliveCountMax {{ ssh_client_alive_count_max }}" }
+  notify: restart ssh
+  tags: [cis_5_2]
+
+- name: "CIS 6.1.3 — Set /etc/shadow permissions"
+  ansible.builtin.file:
+    path: /etc/shadow
+    mode: "0644"               # BUG: should be 0640
+  tags: [cis_6_1]
+
+- name: "CIS 1.7.1 — Deploy login banner"
+  ansible.builtin.copy:
+    content: "{{ banner_text }}\n"
+    dest: /etc/issue.net
+    mode: "0644"
+  tags: [cis_1_7]
+
+- name: "CIS 3.x — Apply sysctl hardening"
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+    reload: true
+  loop: "{{ sysctl_settings | dict2items }}"
+  tags: [cis_3]
+
+- name: "CIS 5.1.8 — Create cron.allow"
+  ansible.builtin.file:
+    path: /etc/cron.allow
+    state: touch
+    owner: root
+    group: root
+    mode: "0600"
+  tags: [cis_5_1]

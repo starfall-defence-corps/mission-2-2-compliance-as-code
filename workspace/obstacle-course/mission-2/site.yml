@@ -1,0 +1,6 @@
+---
+- name: Apply compliance hardening (buggy role)
+  hosts: cis_targets
+  become: true
+  roles:
+    - compliance_baseline

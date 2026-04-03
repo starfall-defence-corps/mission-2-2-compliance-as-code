@@ -1,0 +1,29 @@
+dependency:
+  name: galaxy
+driver:
+  name: default
+platforms:
+  - name: cis-target
+    managed: false
+    groups:
+      - cis_targets
+  - name: sdc-web
+    managed: false
+    groups:
+      - fleet
+      - debian
+  - name: sdc-db
+    managed: false
+    groups:
+      - fleet
+      - redhat
+  - name: sdc-comms
+    managed: false
+    groups:
+      - fleet
+      - debian
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+  directory: tests/
