@@ -157,4 +157,13 @@ When ARIA confirms all three phases, Captain Unpatched is relieved of duty.
 
 ---
 
+## 6. GETTING STARTED
+
+1. Activate your environment: `source venv/bin/activate`
+2. Follow the step-by-step guide: [EXERCISES.md](EXERCISES.md)
+3. Stuck? Consult [HINTS.md](HINTS.md)
+4. Track your progress: [CHECKLIST.md](../CHECKLIST.md)
+
+---
+
 *SDC Cyber Command — 2187 — LIEUTENANT JG EYES ONLY*
