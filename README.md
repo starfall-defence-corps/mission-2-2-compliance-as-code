@@ -28,6 +28,8 @@ source venv/bin/activate
 
 Read your orders: [Mission Briefing](docs/BRIEFING.md)
 
+Step-by-step guide: [Exercises](docs/EXERCISES.md) | Stuck? [Hints](docs/HINTS.md) | Track progress: [Checklist](CHECKLIST.md)
+
 ## Lab Architecture
 
 ```
