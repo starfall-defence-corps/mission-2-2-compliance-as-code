@@ -47,6 +47,11 @@ Each control has:
 | 5.2.16 | Access | SSH LoginGraceTime 60s or less | L1 |
 | 6.1.3 | Maintenance | /etc/shadow permissions restricted | L1 |
 
+**CIS control notes**:
+- **Core dumps** (CIS 1.5.1): Restricted via `/etc/security/limits.d/` drop-in files. A file containing `* hard core 0` prevents all users from creating core dumps.
+- **Login banner** (CIS 1.7.1): `/etc/issue.net` is the SSH pre-login banner (shown before authentication). This is distinct from `/etc/motd` (shown after login).
+- **Cron access** (CIS 5.1.8): When `/etc/cron.allow` exists, only users listed in it may use cron. Creating the file with just `root` restricts cron to root only.
+
 ### Mapping Controls to Ansible Tasks
 
 Every CIS control maps to one or more Ansible tasks. The key insight: **CIS tells you WHAT, Ansible tells the system HOW.**
@@ -68,6 +73,28 @@ ansible-playbook site.yml --tags cis_5_2    # Only SSH controls
 ansible-playbook site.yml --tags cis_6_1    # Only file permissions
 ansible-playbook site.yml                    # All controls
 ```
+
+### What Ansible Tags Are
+
+Tags are labels you attach to tasks. When you run `ansible-playbook --tags cis_5_2`, only tasks tagged with `cis_5_2` execute. When you run without `--tags`, all tasks run. Tags enable selective enforcement — apply only SSH controls, only file permissions, or everything at once.
+
+You can assign multiple tags to a task: `tags: [cis_5_2, ssh]`. Use `--skip-tags` to exclude specific tags.
+
+### The sysctl Module
+
+In Mission 1.3, you hardened kernel parameters by copying a file to `/etc/sysctl.d/`. The `ansible.posix.sysctl` module is the dedicated way to manage individual kernel parameters:
+
+```yaml
+- name: "CIS 3.3.2 — Disable ICMP redirects"
+  ansible.posix.sysctl:
+    name: net.ipv4.conf.all.accept_redirects
+    value: "0"
+    sysctl_set: true
+    reload: true
+  tags: [cis_3_3]
+```
+
+This module writes the parameter and applies it immediately (`sysctl_set: true`). The `ansible.posix` collection is installed during `make setup`.
 
 ### What Lynis Is
 
@@ -137,6 +164,8 @@ cd workspace/obstacle-course/mission-2
 ```
 
 1. **Read the role**: Examine `roles/compliance_baseline/tasks/main.yml` and `roles/compliance_baseline/defaults/main.yml`. The role claims to implement CIS controls, but it has **bugs**.
+
+   > **Note**: The buggy role uses `{{ sysctl_settings | dict2items }}` to loop over a dictionary. The `dict2items` filter converts `{key1: val1, key2: val2}` into `[{key: key1, value: val1}, ...]` for use in loops.
 
 2. **Apply the role**:
    ```bash
