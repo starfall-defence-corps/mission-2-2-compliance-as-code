@@ -289,10 +289,12 @@ class TestMainMission:
         )
         with open(path) as f:
             content = f.read()
-        # Check that students filled in at least some data (not just the template)
-        has_numbers = bool(re.search(r'\d{2,}', content))
+        # Check that students filled in Lynis scores (numbers in the Before/After columns)
+        # The template has empty cells like "| sdc-web | | | |"
+        # Filled cells look like "| sdc-web | 48 | 72 | +24 |"
+        filled_lynis = bool(re.search(r'sdc-\w+\s*\|\s*\d+', content))
         has_status = any(word in content.lower() for word in ["pass", "done", "implemented", "yes", "complete"])
-        assert has_numbers or has_status, (
+        assert filled_lynis or has_status, (
             "ARIA: COMPLIANCE.md appears to be the empty template. "
             "Fill in Lynis scores and control implementation status."
         )
