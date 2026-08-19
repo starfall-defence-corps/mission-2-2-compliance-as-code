@@ -1,5 +1,7 @@
 # Starfall Defence Corps Academy
 
+> 🧭 [← 2.1 Weapon Handling Test](https://github.com/starfall-defence-corps/mission-2-1-weapon-handling-test) · **You are here: 2.2 Compliance as Code** · [2.3 Fleet Sync →](https://github.com/starfall-defence-corps/mission-2-3-fleet-sync) · [🏠 Academy Hub](https://github.com/starfall-defence-corps/sdc-academy)
+
 ## Mission 2.2: Compliance as Code
 
 > *"Captain Unpatched hasn't updated a server since 2019. 'If it works, don't touch it.' His compliance evidence is a screenshot from three years ago. This ends now."*
