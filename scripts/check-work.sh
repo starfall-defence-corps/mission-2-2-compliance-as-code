@@ -35,7 +35,7 @@ if [ $EXIT_CODE -eq 0 ]; then
     echo -e "  ARIA: All objectives verified."
     echo -e "  Mission 2.2 status: COMPLETE"
     echo -e ""
-    echo -e "  Captain Unpatched has been defeated."
+    echo -e "  Corsair Unpatched has been defeated."
     echo -e "  Compliance is code. Measurable. Repeatable."
     echo -e "  The Starfall Defence Corps salutes your work."
     echo -e "  ==============================================${RESET}"
