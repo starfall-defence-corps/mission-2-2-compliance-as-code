@@ -6,9 +6,9 @@
 
 ## Mission 2.2: Compliance as Code
 
-> *"Captain Unpatched hasn't updated a server since 2019. 'If it works, don't touch it.' His compliance evidence is a screenshot from three years ago. This ends now."*
+> *"Corsair Unpatched hasn't updated a server since 2019. 'If it works, don't touch it.' His compliance evidence is a screenshot from three years ago. This ends now."*
 
-You are a Lieutenant JG at the Starfall Defence Corps Academy. You can harden systems. You can test them. Now prove you can measure compliance against an industry standard — CIS Benchmarks — and implement it as code.
+You are a Lieutenant at the Starfall Defence Corps Academy. You can harden systems. You can test them. Now prove you can measure compliance against an industry standard — CIS Benchmarks — and implement it as code.
 
 ## Prerequisites
 

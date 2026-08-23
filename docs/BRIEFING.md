@@ -13,9 +13,9 @@ AUTHORITY: SDC Cyber Command, 2187
 
 ### 1a. Enemy Forces
 
-**Captain Unpatched** has been running the fleet's compliance program. His method: a spreadsheet. Last updated: 2019. "If it works, don't update it." His nodes pass no benchmark. His audit evidence is a screenshot of a terminal from three years ago.
+**Corsair Unpatched** has been running the fleet's compliance program. His method: a spreadsheet. Last updated: 2019. "If it works, don't update it." His nodes pass no benchmark. His audit evidence is a screenshot of a terminal from three years ago.
 
-The Voidborn don't need zero-days when Captain Unpatched leaves default SSH settings, unrestricted core dumps, and wide-open cron access on every node.
+The Voidborn don't need zero-days when Corsair Unpatched leaves default SSH settings, unrestricted core dumps, and wide-open cron access on every node.
 
 ### 1b. Friendly Forces
 
@@ -63,7 +63,7 @@ Implement CIS Level 1 controls as Ansible tasks. Measure compliance. Prove impro
 
 ### 3a. Commander's Intent
 
-Compliance is not a checkbox — it's code. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. Captain Unpatched's spreadsheet dies today.
+Compliance is not a checkbox — it's code. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. Corsair Unpatched's spreadsheet dies today.
 
 ### 3b. Lab Assets
 
@@ -149,9 +149,9 @@ ansible sdc-web -m shell -a "lynis audit system --quick --no-colors 2>/dev/null 
 
 ## 5. COMMAND AND SIGNAL
 
-**Commander's Final Order**: Captain Unpatched's reign of "it works, don't touch it" ends here. Compliance is code. Measurable. Repeatable. Auditable. Every CIS control is an Ansible task. Every task has a tag. Every deployment improves the hardening index.
+**Commander's Final Order**: Corsair Unpatched's reign of "it works, don't touch it" ends here. Compliance is code. Measurable. Repeatable. Auditable. Every CIS control is an Ansible task. Every task has a tag. Every deployment improves the hardening index.
 
-When ARIA confirms all three phases, Captain Unpatched is relieved of duty.
+When ARIA confirms all three phases, Corsair Unpatched is relieved of duty.
 
 **Start your timer. Begin.**
 

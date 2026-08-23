@@ -1,6 +1,6 @@
 # Mission 2.2: Compliance as Code — Exercises
 
-**Rank**: Lieutenant JG
+**Rank**: Lieutenant
 **Prerequisite**: Module 1 complete + Mission 2.1 (Weapon Handling Test)
 
 ---
