@@ -1,5 +1,5 @@
 ---
-CLASSIFICATION: LIEUTENANT JG EYES ONLY
+CLASSIFICATION: LIEUTENANT EYES ONLY
 MISSION: 2.2 — COMPLIANCE AS CODE
 THEATRE: Starfall Defence Corps Academy
 AUTHORITY: SDC Cyber Command, 2187
@@ -166,4 +166,4 @@ When ARIA confirms all three phases, Corsair Unpatched is relieved of duty.
 
 ---
 
-*SDC Cyber Command — 2187 — LIEUTENANT JG EYES ONLY*
+*SDC Cyber Command — 2187 — LIEUTENANT EYES ONLY*

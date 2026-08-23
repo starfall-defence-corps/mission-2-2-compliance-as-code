@@ -325,4 +325,4 @@ Stuck? Consult [HINTS.md](HINTS.md) for troubleshooting.
 
 ---
 
-*SDC Cyber Command — 2187 — LIEUTENANT JG EYES ONLY*
+*SDC Cyber Command — 2187 — LIEUTENANT EYES ONLY*
