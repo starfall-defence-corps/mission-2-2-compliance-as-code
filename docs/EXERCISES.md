@@ -199,7 +199,7 @@ cd workspace/obstacle-course/mission-2
 
 ---
 
-## Phase 3: Main Mission — Compliance as Code
+## Phase 3: Main Mission — The Baseline Sprint (H-45)
 
 **Location**: `workspace/main-mission/`
 
@@ -207,7 +207,31 @@ cd workspace/obstacle-course/mission-2
 cd workspace/main-mission
 ```
 
-Build a complete CIS Level 1 compliance solution for the fleet.
+> **START YOUR SPRINT TIMER.** Readiness exercise VOIDBREAKER goes hot in 45 minutes.
+> Baseline all three fleet nodes to CIS Level 1 before the window opens.
+
+Build a complete CIS Level 1 compliance solution for the fleet — but this time the clock is part of the test. You will not finish all controls on all nodes by working top-to-bottom. **Triage.**
+
+### Triage — Work the Fleet Wide Before Deep
+
+Apply controls in priority order (from [BRIEFING §3f](BRIEFING.md)), and apply each tier to **all three nodes** before moving to the next. If the clock beats you, P1-everywhere beats P3-on-one-node.
+
+| Priority | Controls | Run with |
+|----------|----------|----------|
+| **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | `ansible-playbook site.yml --tags cis_5_2` |
+| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | `--tags cis_5_1,cis_3_3` (+ SSH timeout in `cis_5_2`) |
+| **P3 — Evidence & hygiene** | 6.1.3 shadow perms · 1.5.1 core dumps · 1.7.1 banner | `--tags cis_6_1,cis_1_5,cis_1_7` |
+
+Your tags are what make triage *executable*: `--tags cis_5_2` lets you push credential defence to the whole fleet in one command, then move on. That is why every task must be tagged.
+
+> **Timing ladder** (honour-system — ARIA grades correctness, the clock is for you):
+>
+> | Time to baseline all 3 nodes | Rating |
+> |------------------------------|--------|
+> | Under 30 min | Ahead of the window — full readiness |
+> | 30–45 min | Baselined before H-hour — mission success |
+> | 45–60 min | Window opened mid-sprint — partial exposure |
+> | 60+ min | Fleet met the adversary unhardened — after-action review |
 
 ### Step 1: Bring Your Role
 

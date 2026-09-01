@@ -1,6 +1,11 @@
-# Main Mission: Compliance as Code
+# Main Mission: The Baseline Sprint (H-45)
 
-Extend your `fleet_hardening` role with CIS Level 1 controls. Deploy to the fleet. Measure compliance with Lynis.
+> Readiness exercise **VOIDBREAKER** goes hot in 45 minutes. Baseline all three fleet
+> nodes to CIS Level 1 before the window opens. You can't do every control on every
+> node — **triage** (see [BRIEFING §3f](../../docs/BRIEFING.md)): work P1 → P2 → P3,
+> applying each priority tier fleet-wide before the next.
+
+Extend your `fleet_hardening` role with CIS Level 1 controls. Deploy to the fleet. Measure compliance with Lynis. Tag every task by CIS section — tags are what let you push one priority tier to the whole fleet in a single command.
 
 ## What You Build
 

@@ -7,19 +7,25 @@ AUTHORITY: SDC Cyber Command, 2187
 
 # MISSION 2.2 — COMPLIANCE AS CODE
 
+> **FLASH TRAFFIC — H-45.** SDC Cyber Command has scheduled readiness exercise
+> **VOIDBREAKER**. At H-hour the range goes hot: the adversary-emulation cell begins
+> live probing of the fleet. You have **45 minutes** to baseline every node to a CIS
+> Level 1 standard before the window opens. You cannot implement 200+ controls in 45
+> minutes. **Triage. Harden the controls that stop the most likely attacks — first.**
+
 ---
 
 ## 1. SITUATION
 
 ### 1a. Enemy Forces
 
-**Corsair Unpatched** has been running the fleet's compliance program. His method: a spreadsheet. Last updated: 2019. "If it works, don't update it." His nodes pass no benchmark. His audit evidence is a screenshot of a terminal from three years ago.
+**Corsair Unpatched** has been running the fleet's compliance program. His method: a spreadsheet. Last updated: 2019. "If it works, don't update it." His nodes pass no benchmark. His audit evidence is a screenshot of a terminal from three years ago — and now the exercise clock is running against every corner he cut.
 
-The Voidborn don't need zero-days when Corsair Unpatched leaves default SSH settings, unrestricted core dumps, and wide-open cron access on every node.
+Default SSH settings, unrestricted core dumps, wide-open cron access on every node — the adversary-emulation cell doesn't need zero-days to walk through doors Corsair left open. When VOIDBREAKER goes hot, whatever you haven't baselined is fair game.
 
 ### 1b. Friendly Forces
 
-You know how to harden systems (Module 1). You know how to test them (Mission 2.1). Now you learn to measure compliance against an industry standard — the **CIS Benchmarks** — and prove your hardening is correct, repeatable, and auditable.
+You know how to harden systems (Module 1). You know how to test them (Mission 2.1). Now you learn two things at once: to measure compliance against an industry standard — the **CIS Benchmarks** — and to **triage under a clock**. When the window is 45 minutes and the control set is 200-plus, the operator who knows *which controls matter most* baselines the whole fleet; the one who works top-to-bottom hardens one node and meets the adversary on the other two.
 
 ### 1c. What CIS Benchmarks Are
 
@@ -49,13 +55,15 @@ In military contexts, **STIGs** (Security Technical Implementation Guides) serve
 
 ## 2. MISSION
 
-Implement CIS Level 1 controls as Ansible tasks. Measure compliance. Prove improvement.
+Implement CIS Level 1 controls as Ansible tasks. Measure compliance. Prove improvement — and in the main mission, get the fleet baselined **before the exercise window opens**.
 
-| Phase | Description |
-|-------|-------------|
-| Obstacle Course Mission 1 | Given CIS tests, write the role |
-| Obstacle Course Mission 2 | Given buggy role, write tests that catch gaps |
-| Main Mission | CIS-harden the fleet, measure with Lynis |
+| Phase | Description | Framing |
+|-------|-------------|---------|
+| Obstacle Course Mission 1 | Given CIS tests, write the role | Pre-flight rehearsal — build muscle memory |
+| Obstacle Course Mission 2 | Given buggy role, write tests that catch gaps | Pre-flight rehearsal — learn to spot gaps |
+| Main Mission — **Baseline Sprint** | CIS-harden the fleet against the clock, measure with Lynis | H-45: the real thing, triaged and timed |
+
+The obstacle course is your rehearsal: no live adversary, drill the mechanics until the CIS-control-to-Ansible-task translation is automatic. The main mission is the sprint: same skills, but now the clock and the triage decision are the test.
 
 ---
 
@@ -63,7 +71,7 @@ Implement CIS Level 1 controls as Ansible tasks. Measure compliance. Prove impro
 
 ### 3a. Commander's Intent
 
-Compliance is not a checkbox — it's code. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. Corsair Unpatched's spreadsheet dies today.
+Compliance is not a checkbox — it's code, and under an exercise clock it's a *triage* decision. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. But when the window is 45 minutes wide, "harden everything" is not a plan — **harden the highest-impact controls across the whole fleet first, then deepen.** Corsair Unpatched's spreadsheet dies today; the habit of hardening wide before deep is what you carry into Noise Storm (2.5), when the probing is no longer emulated.
 
 ### 3b. Lab Assets
 
@@ -129,11 +137,23 @@ ansible sdc-web -m shell -a "lynis audit system --quick --no-colors 2>/dev/null 
 - You may consult CIS benchmark documentation and Ansible docs
 - No looking at other missions' solution files
 
+### 3f. Triage Priority — What to Baseline First
+
+You have ten controls and forty-five minutes across three nodes. Work them in **priority order**, applying each priority tier to the *whole fleet* before you move to the next. If the clock beats you, you want P1 done everywhere — not P3 done on one node.
+
+| Priority | Controls | Why these first |
+|----------|----------|-----------------|
+| **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | Credential attacks — brute force, password spray, root SSH — are the adversary's opening move. This is exactly what hits you in Noise Storm (2.5). Shutting the front door buys the most survival per minute. |
+| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | Shrinks the ways an intruder moves laterally and keeps a foothold. High value once the door is shut. |
+| **P3 — Evidence & hygiene** | 6.1.3 shadow perms · 1.5.1 core dumps · 1.7.1 login banner | Defence-in-depth and audit hygiene. The banner is legal/cosmetic — real, but it stops zero attacks, so it is **last**. |
+
+> **The triage lesson**: you should be able to *justify* this order. A control that blocks the most likely attack outranks a control that is merely required for the checklist. "Wide before deep" — every node gets P1 before any node gets P3.
+
 ---
 
-## 4. OBSTACLE COURSE TIMING
+## 4. OBSTACLE COURSE TIMING (PRE-FLIGHT REHEARSAL)
 
-> **START YOUR TIMER** at the beginning of the Obstacle Course.
+> **START YOUR TIMER** at the beginning of the Obstacle Course. This is a skills drill — build speed before the sprint.
 
 | Time | Rating |
 |------|--------|
@@ -147,17 +167,34 @@ ansible sdc-web -m shell -a "lynis audit system --quick --no-colors 2>/dev/null 
 
 ---
 
-## 5. COMMAND AND SIGNAL
+## 5. THE BASELINE SPRINT (MAIN MISSION) — H-45
 
-**Commander's Final Order**: Corsair Unpatched's reign of "it works, don't touch it" ends here. Compliance is code. Measurable. Repeatable. Auditable. Every CIS control is an Ansible task. Every task has a tag. Every deployment improves the hardening index.
+> **START YOUR SPRINT TIMER** when you begin the main mission (from your first Lynis baseline scan). **STOP** when `make test` confirms all three fleet nodes are baselined and tested.
 
-When ARIA confirms all three phases, Corsair Unpatched is relieved of duty.
+Work the triage tiers in order (§3f), fleet-wide. Your rating is how much of the fleet you baselined before exercise VOIDBREAKER went hot:
+
+| Time to baseline all 3 nodes | Rating |
+|------------------------------|--------|
+| Under 30 min | **Ahead of the window** — full readiness, P1–P3 fleet-wide with margin |
+| 30–45 min | **Baselined before H-hour** — mission success |
+| 45–60 min | **Window opened mid-sprint** — partial exposure; note which nodes were still soft |
+| 60+ min | **Fleet met the adversary unhardened** — after-action review: what would you triage differently? |
+
+> This timer is honour-system, like the obstacle course — ARIA grades correctness, not the clock. The clock is for *you*: it forces the triage decision that makes the skill real.
+
+---
+
+## 6. COMMAND AND SIGNAL
+
+**Commander's Final Order**: Corsair Unpatched's reign of "it works, don't touch it" ends here. Compliance is code. Measurable. Repeatable. Auditable. Every CIS control is an Ansible task. Every task has a tag. Every deployment improves the hardening index — and when the exercise clock is running, you baseline wide before you baseline deep.
+
+When ARIA confirms all three phases, Corsair Unpatched is relieved of duty and the fleet meets VOIDBREAKER hardened.
 
 **Start your timer. Begin.**
 
 ---
 
-## 6. GETTING STARTED
+## 7. GETTING STARTED
 
 1. Activate your environment: `source venv/bin/activate`
 2. Follow the step-by-step guide: [EXERCISES.md](EXERCISES.md)
