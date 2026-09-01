@@ -16,6 +16,27 @@
 
 **Need a clean slate**: Run `make reset` to rebuild containers. Your workspace files are preserved.
 
+## Sprint Triage — Running Controls Fleet-Wide by Priority
+
+The main mission is timed (H-45). Tags let you push one priority tier to the whole fleet in a single command, then move to the next — this is the point of tagging every task:
+
+```bash
+# P1 — credential defence, all nodes first
+ansible-playbook -i inventory/hosts.yml site.yml --tags cis_5_2
+
+# P2 — surface & persistence
+ansible-playbook -i inventory/hosts.yml site.yml --tags cis_5_1,cis_3_3
+
+# P3 — evidence & hygiene
+ansible-playbook -i inventory/hosts.yml site.yml --tags cis_6_1,cis_1_5,cis_1_7
+
+# Out of time? Confirm at least P1 landed everywhere:
+ansible all -i inventory/hosts.yml -m shell -a \
+  "sshd -T | grep -E 'permitrootlogin|passwordauthentication|maxauthtries'" --become
+```
+
+**Wide before deep**: if the clock beats you, P1 on all three nodes beats P1–P3 on one node. See [BRIEFING §3f](BRIEFING.md) for the full priority table and the reasoning behind the order.
+
 ## Common CIS Implementation Patterns
 
 ### sysctl

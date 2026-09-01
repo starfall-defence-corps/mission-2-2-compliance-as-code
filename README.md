@@ -6,9 +6,9 @@
 
 ## Mission 2.2: Compliance as Code
 
-> *"Corsair Unpatched hasn't updated a server since 2019. 'If it works, don't touch it.' His compliance evidence is a screenshot from three years ago. This ends now."*
+> *"Readiness exercise VOIDBREAKER goes hot in 45 minutes. Corsair Unpatched hasn't baselined a server since 2019 — 'if it works, don't touch it.' You don't get to harden all 200 controls before the window opens. Triage. Baseline the fleet. Now."*
 
-You are a Lieutenant at the Starfall Defence Corps Academy. You can harden systems. You can test them. Now prove you can measure compliance against an industry standard — CIS Benchmarks — and implement it as code.
+You are a Lieutenant at the Starfall Defence Corps Academy. You can harden systems. You can test them. Now prove you can measure compliance against an industry standard — **CIS Benchmarks** — implement it as code, and **triage which controls matter most when the clock is running**. The obstacle course is your rehearsal; the main mission is a timed baseline sprint against the exercise window.
 
 ## Prerequisites
 
@@ -49,9 +49,9 @@ Step-by-step guide: [Exercises](docs/EXERCISES.md) | Stuck? [Hints](docs/HINTS.m
 
 | Part | Description | Location |
 |------|-------------|----------|
-| Obstacle Course 1 | Given CIS tests, write the role | `workspace/obstacle-course/mission-1/` |
-| Obstacle Course 2 | Given buggy role, write tests | `workspace/obstacle-course/mission-2/` |
-| Main Mission | CIS-harden the fleet with Lynis | `workspace/main-mission/` |
+| Obstacle Course 1 | *Rehearsal* — given CIS tests, write the role | `workspace/obstacle-course/mission-1/` |
+| Obstacle Course 2 | *Rehearsal* — given buggy role, write tests | `workspace/obstacle-course/mission-2/` |
+| Main Mission — **Baseline Sprint** | H-45: triage + CIS-harden the fleet against the clock, measure with Lynis | `workspace/main-mission/` |
 
 ## Available Commands
 
