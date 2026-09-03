@@ -144,7 +144,7 @@ You have ten controls and forty-five minutes across three nodes. Work them in **
 | Priority | Controls | Why these first |
 |----------|----------|-----------------|
 | **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | Credential attacks — brute force, password spray, root SSH — are the adversary's opening move. This is exactly what hits you in Noise Storm (2.5). Shutting the front door buys the most survival per minute. |
-| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | Shrinks the ways an intruder moves laterally and keeps a foothold. High value once the door is shut. |
+| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.2.16 LoginGraceTime ≤60s · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | Shrinks the ways an intruder moves laterally and keeps a foothold. High value once the door is shut. |
 | **P3 — Evidence & hygiene** | 6.1.3 shadow perms · 1.5.1 core dumps · 1.7.1 login banner | Defence-in-depth and audit hygiene. The banner is legal/cosmetic — real, but it stops zero attacks, so it is **last**. |
 
 > **The triage lesson**: you should be able to *justify* this order. A control that blocks the most likely attack outranks a control that is merely required for the checklist. "Wide before deep" — every node gets P1 before any node gets P3.
