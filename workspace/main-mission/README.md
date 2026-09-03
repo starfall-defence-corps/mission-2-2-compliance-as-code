@@ -31,6 +31,7 @@ At minimum, your role must implement these CIS Level 1 controls:
 | CIS 5.2.5 | SSH password auth disabled | `cis_5_2` |
 | CIS 5.2.7 | SSH MaxAuthTries 4 or less | `cis_5_2` |
 | CIS 5.2.13 | SSH idle timeout configured | `cis_5_2` |
+| CIS 5.2.16 | SSH LoginGraceTime 60s or less | `cis_5_2` |
 | CIS 6.1.3 | /etc/shadow permissions | `cis_6_1` |
 
 Plus any additional hardening from your Module 1 role (telnet removed, firewall active, MOTD, etc).
