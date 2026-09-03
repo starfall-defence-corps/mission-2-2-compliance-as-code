@@ -20,6 +20,7 @@
 | CIS 5.2.5 | SSH password auth disabled | |
 | CIS 5.2.7 | SSH MaxAuthTries set to 4 | |
 | CIS 5.2.13 | SSH idle timeout configured | |
+| CIS 5.2.16 | SSH LoginGraceTime 60s or less | |
 | CIS 6.1.3 | /etc/shadow permissions 0640 | |
 | | | |
 
