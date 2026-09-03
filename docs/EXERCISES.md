@@ -219,7 +219,7 @@ Apply controls in priority order (from [BRIEFING §3f](BRIEFING.md)), and apply 
 | Priority | Controls | Run with |
 |----------|----------|----------|
 | **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | `ansible-playbook site.yml --tags cis_5_2` |
-| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | `--tags cis_5_1,cis_3_3` (+ SSH timeout in `cis_5_2`) |
+| **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.2.16 LoginGraceTime ≤60s · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | `--tags cis_5_1,cis_3_3` (+ SSH timeouts in `cis_5_2`) |
 | **P3 — Evidence & hygiene** | 6.1.3 shadow perms · 1.5.1 core dumps · 1.7.1 banner | `--tags cis_6_1,cis_1_5,cis_1_7` |
 
 Your tags are what make triage *executable*: `--tags cis_5_2` lets you push credential defence to the whole fleet in one command, then move on. That is why every task must be tagged.
