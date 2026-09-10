@@ -15,7 +15,7 @@
 
 ## Phase 3: Main Mission — Baseline Sprint (H-45)
 - [ ] Sprint timer started at first Lynis baseline scan
-- [ ] Baseline Lynis scan recorded in COMPLIANCE.md
+- [ ] Baseline Lynis scan recorded in `workspace/main-mission/COMPLIANCE.md`
 - [ ] fleet_hardening role extended with CIS controls
 - [ ] All tasks tagged with CIS section IDs (tags are what make triage executable)
 - [ ] Triaged P1 → P2 → P3, applying each tier fleet-wide before the next
@@ -25,7 +25,7 @@
 - [ ] test_fleet_compliance.py with 10+ test functions
 - [ ] Molecule scenario configured
 - [ ] All tests pass against fleet
-- [ ] COMPLIANCE.md complete
+- [ ] `workspace/main-mission/COMPLIANCE.md` complete
 - [ ] Sprint time + rating noted (honour-system) — can you justify your triage order?
 - [ ] `make test` — all phases pass
 

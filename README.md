@@ -16,6 +16,7 @@ You are a Lieutenant at the Starfall Defence Corps Academy. You can harden syste
 - Completed Mission 2.1 (Weapon Handling Test)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with Docker Compose v2)
 - [GNU Make](https://www.gnu.org/software/make/)
+- **Ansible**: provided by the lab — `make setup` builds a local venv with `ansible-core`; no host install needed
 - Python 3.10+ (with `python3-venv`)
 - Git
 
@@ -26,6 +27,7 @@ You are a Lieutenant at the Starfall Defence Corps Academy. You can harden syste
 ```bash
 git clone https://github.com/YOUR-USERNAME/mission-2-2-compliance-as-code.git
 cd mission-2-2-compliance-as-code
+make doctor
 make setup
 source venv/bin/activate
 ```
@@ -57,8 +59,10 @@ Step-by-step guide: [Exercises](docs/EXERCISES.md) | Stuck? [Hints](docs/HINTS.m
 
 ```
 make help          Show available commands
+make doctor        Check your machine is mission-ready (Docker, ports, tools)
 make setup         Launch compliance range + fleet (4 containers)
 make test          Ask ARIA to verify your work
+make submit        Submit your work for ARIA review (branch, commit, push, PR)
 make reset         Destroy and rebuild all nodes
 make destroy       Tear down everything
 make ssh-cis-target SSH into obstacle course target
