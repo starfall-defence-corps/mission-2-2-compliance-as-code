@@ -1,7 +1,7 @@
 # Mission 2.2: Compliance as Code — Exercises
 
 **Rank**: Lieutenant
-**Prerequisite**: Module 1 complete + Mission 2.1 (Weapon Handling Test)
+**Prerequisite**: Module 1 complete + [Mission 2.1 (Weapon Handling Test)](https://github.com/starfall-defence-corps/mission-2-1-weapon-handling-test)
 
 ---
 
@@ -82,7 +82,7 @@ You can assign multiple tags to a task: `tags: [cis_5_2, ssh]`. Use `--skip-tags
 
 ### The sysctl Module
 
-In Mission 1.3, you hardened kernel parameters by copying a file to `/etc/sysctl.d/`. The `ansible.posix.sysctl` module is the dedicated way to manage individual kernel parameters:
+In [Mission 1.3](https://github.com/starfall-defence-corps/mission-1-3-clean-sweep), you hardened kernel parameters by copying a file to `/etc/sysctl.d/`. The `ansible.posix.sysctl` module is the dedicated way to manage individual kernel parameters:
 
 ```yaml
 - name: "CIS 3.3.2 — Disable ICMP redirects"
@@ -235,7 +235,7 @@ Your tags are what make triage *executable*: `--tags cis_5_2` lets you push cred
 
 ### Step 1: Bring Your Role
 
-Copy your `fleet_hardening` role from Mission 1.5 (or recreate it):
+Copy your `fleet_hardening` role from [Mission 1.5](https://github.com/starfall-defence-corps/mission-1-5-clean-house) (or recreate it):
 
 ```bash
 mkdir -p roles
