@@ -28,3 +28,5 @@
 - [ ] COMPLIANCE.md complete
 - [ ] Sprint time + rating noted (honour-system) — can you justify your triage order?
 - [ ] `make test` — all phases pass
+
+**Next stop**: [Mission 2.3 — Fleet Sync](https://github.com/starfall-defence-corps/mission-2-3-fleet-sync)
