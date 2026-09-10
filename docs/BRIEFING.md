@@ -25,7 +25,7 @@ Default SSH settings, unrestricted core dumps, wide-open cron access on every no
 
 ### 1b. Friendly Forces
 
-You know how to harden systems (Module 1). You know how to test them (Mission 2.1). Now you learn two things at once: to measure compliance against an industry standard — the **CIS Benchmarks** — and to **triage under a clock**. When the window is 45 minutes and the control set is 200-plus, the operator who knows *which controls matter most* baselines the whole fleet; the one who works top-to-bottom hardens one node and meets the adversary on the other two.
+You know how to harden systems (Module 1). You know how to test them ([Mission 2.1](https://github.com/starfall-defence-corps/mission-2-1-weapon-handling-test)). Now you learn two things at once: to measure compliance against an industry standard — the **CIS Benchmarks** — and to **triage under a clock**. When the window is 45 minutes and the control set is 200-plus, the operator who knows *which controls matter most* baselines the whole fleet; the one who works top-to-bottom hardens one node and meets the adversary on the other two.
 
 ### 1c. What CIS Benchmarks Are
 
@@ -71,7 +71,7 @@ The obstacle course is your rehearsal: no live adversary, drill the mechanics un
 
 ### 3a. Commander's Intent
 
-Compliance is not a checkbox — it's code, and under an exercise clock it's a *triage* decision. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. But when the window is 45 minutes wide, "harden everything" is not a plan — **harden the highest-impact controls across the whole fleet first, then deepen.** Corsair Unpatched's spreadsheet dies today; the habit of hardening wide before deep is what you carry into Noise Storm (2.5), when the probing is no longer emulated.
+Compliance is not a checkbox — it's code, and under an exercise clock it's a *triage* decision. Every control maps to an Ansible task. Every task has a CIS tag. Every deployment is measurable. But when the window is 45 minutes wide, "harden everything" is not a plan — **harden the highest-impact controls across the whole fleet first, then deepen.** Corsair Unpatched's spreadsheet dies today; the habit of hardening wide before deep is what you carry into [Noise Storm (2.5)](https://github.com/starfall-defence-corps/mission-2-5-noise-storm), when the probing is no longer emulated.
 
 ### 3b. Lab Assets
 
