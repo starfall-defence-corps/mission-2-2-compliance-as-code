@@ -24,16 +24,16 @@ The main mission is timed (H-45). Tags let you push one priority tier to the who
 
 ```bash
 # P1 — credential defence, all nodes first
-ansible-playbook -i inventory/hosts.yml site.yml --tags cis_5_2
+ansible-playbook -i workspace/main-mission/inventory/hosts.yml workspace/main-mission/site.yml --tags cis_5_2
 
 # P2 — surface & persistence
-ansible-playbook -i inventory/hosts.yml site.yml --tags cis_5_1,cis_3_3
+ansible-playbook -i workspace/main-mission/inventory/hosts.yml workspace/main-mission/site.yml --tags cis_5_1,cis_3_3
 
 # P3 — evidence & hygiene
-ansible-playbook -i inventory/hosts.yml site.yml --tags cis_6_1,cis_1_5,cis_1_7
+ansible-playbook -i workspace/main-mission/inventory/hosts.yml workspace/main-mission/site.yml --tags cis_6_1,cis_1_5,cis_1_7
 
 # Out of time? Confirm at least P1 landed everywhere:
-ansible all -i inventory/hosts.yml -m shell -a \
+ansible all -i workspace/main-mission/inventory/hosts.yml -m shell -a \
   "sshd -T | grep -E 'permitrootlogin|passwordauthentication|maxauthtries'" --become
 ```
 
