@@ -1,3 +1,5 @@
+# The SSH key path comes from ansible.cfg (present in the project root),
+# so this inventory works whether Ansible is run from there or elsewhere.
 all:
   children:
     cis_targets:
@@ -5,4 +7,3 @@ all:
         cis-target:
           ansible_host: localhost
           ansible_port: 2251
-          ansible_ssh_private_key_file: ../../.ssh/cadet_key

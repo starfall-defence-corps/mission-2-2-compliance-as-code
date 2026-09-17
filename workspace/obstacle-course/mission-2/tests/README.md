@@ -21,11 +21,13 @@ Write `test_compliance_baseline.py` in this directory.
 
 ### Run Your Tests
 
+Run from the project root:
+
 ```bash
-pytest tests/test_compliance_baseline.py \
+pytest workspace/obstacle-course/mission-2/tests/test_compliance_baseline.py \
   --hosts=ssh://cadet@localhost:2251 \
-  --ssh-identity-file=../../.ssh/cadet_key \
-  --ssh-config=../../.ssh/testinfra_ssh_config \
+  --ssh-identity-file=workspace/.ssh/cadet_key \
+  --ssh-config=workspace/.ssh/testinfra_ssh_config \
   --sudo -v
 ```
 
