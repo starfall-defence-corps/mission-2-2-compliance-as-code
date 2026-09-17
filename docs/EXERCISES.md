@@ -3,6 +3,8 @@
 **Rank**: Lieutenant
 **Prerequisite**: Module 1 complete + [Mission 2.1 (Weapon Handling Test)](https://github.com/starfall-defence-corps/mission-2-1-weapon-handling-test)
 
+**One directory for everything**: run every command in this mission — `ansible ...`, `ansible-playbook ...`, `pytest ...`, and `make ...` — from the **project root** (the folder with the `Makefile`). An `ansible.cfg` lives both there and in `workspace/`, so Ansible works from either; the steps below assume the project root throughout.
+
 ---
 
 ## Phase 0: Activate Your Environment
@@ -124,32 +126,28 @@ Output includes:
 
 **Location**: `workspace/obstacle-course/mission-1/`
 
-```bash
-cd workspace/obstacle-course/mission-1
-```
-
-1. **Read the 8 tests** at `tests/test_cis_hardening.py`. Each test maps to a CIS control.
+1. **Read the 8 tests** at `workspace/obstacle-course/mission-1/tests/test_cis_hardening.py`. Each test maps to a CIS control.
 
 2. **Create the role**:
    ```bash
-   ansible-galaxy init roles/cis_hardening
+   ansible-galaxy init workspace/obstacle-course/mission-1/roles/cis_hardening
    ```
 
-3. **Write tasks** in `roles/cis_hardening/tasks/main.yml`:
+3. **Write tasks** in `workspace/obstacle-course/mission-1/roles/cis_hardening/tasks/main.yml`:
    - Each task must implement a CIS control
    - Each task must have a `tags` field with the CIS section (e.g., `tags: [cis_5_2]`)
    - You need at least 5 tasks (some tests check multiple things in one task)
 
 4. **Apply the role**:
    ```bash
-   ansible-playbook -i inventory.yml site.yml
+   ansible-playbook -i workspace/obstacle-course/mission-1/inventory.yml workspace/obstacle-course/mission-1/site.yml
    ```
 
 5. **Run the tests**:
    ```bash
-   pytest tests/ --hosts=ssh://cadet@localhost:2251 \
-     --ssh-identity-file=../../.ssh/cadet_key \
-     --ssh-config=../../.ssh/testinfra_ssh_config \
+   pytest workspace/obstacle-course/mission-1/tests/ --hosts=ssh://cadet@localhost:2251 \
+     --ssh-identity-file=workspace/.ssh/cadet_key \
+     --ssh-config=workspace/.ssh/testinfra_ssh_config \
      --sudo -v
    ```
 
@@ -159,29 +157,25 @@ cd workspace/obstacle-course/mission-1
 
 **Location**: `workspace/obstacle-course/mission-2/`
 
-```bash
-cd workspace/obstacle-course/mission-2
-```
-
-1. **Read the role**: Examine `roles/compliance_baseline/tasks/main.yml` and `roles/compliance_baseline/defaults/main.yml`. The role claims to implement CIS controls, but it has **bugs**.
+1. **Read the role**: Examine `workspace/obstacle-course/mission-2/roles/compliance_baseline/tasks/main.yml` and `workspace/obstacle-course/mission-2/roles/compliance_baseline/defaults/main.yml`. The role claims to implement CIS controls, but it has **bugs**.
 
    > **Note**: The buggy role uses `{{ sysctl_settings | dict2items }}` to loop over a dictionary. The `dict2items` filter converts `{key1: val1, key2: val2}` into `[{key: key1, value: val1}, ...]` for use in loops.
 
 2. **Apply the role**:
    ```bash
-   ansible-playbook -i inventory.yml site.yml
+   ansible-playbook -i workspace/obstacle-course/mission-2/inventory.yml workspace/obstacle-course/mission-2/site.yml
    ```
 
-3. **Write tests** at `tests/test_compliance_baseline.py`. Include:
+3. **Write tests** at `workspace/obstacle-course/mission-2/tests/test_compliance_baseline.py`. Include:
    - Basic checks: SSH service running, banner deployed, cron.allow exists
    - CIS compliance checks: verify actual values match CIS requirements
    - Find the bugs — at least 3 controls are misconfigured or missing
 
 4. **Run your tests**:
    ```bash
-   pytest tests/test_compliance_baseline.py --hosts=ssh://cadet@localhost:2251 \
-     --ssh-identity-file=../../.ssh/cadet_key \
-     --ssh-config=../../.ssh/testinfra_ssh_config \
+   pytest workspace/obstacle-course/mission-2/tests/test_compliance_baseline.py --hosts=ssh://cadet@localhost:2251 \
+     --ssh-identity-file=workspace/.ssh/cadet_key \
+     --ssh-config=workspace/.ssh/testinfra_ssh_config \
      --sudo -v
    ```
 
@@ -203,10 +197,6 @@ cd workspace/obstacle-course/mission-2
 
 **Location**: `workspace/main-mission/`
 
-```bash
-cd workspace/main-mission
-```
-
 > **START YOUR SPRINT TIMER.** Readiness exercise VOIDBREAKER goes hot in 45 minutes.
 > Baseline all three fleet nodes to CIS Level 1 before the window opens.
 
@@ -218,7 +208,7 @@ Apply controls in priority order (from [BRIEFING §3f](BRIEFING.md)), and apply 
 
 | Priority | Controls | Run with |
 |----------|----------|----------|
-| **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | `ansible-playbook site.yml --tags cis_5_2` |
+| **P1 — Credential defence** | 5.2.4 root login off · 5.2.5 password auth off · 5.2.7 MaxAuthTries ≤4 | `ansible-playbook -i workspace/main-mission/inventory/hosts.yml workspace/main-mission/site.yml --tags cis_5_2` |
 | **P2 — Surface & persistence** | 5.2.13 idle timeout · 5.2.16 LoginGraceTime ≤60s · 5.1.8 cron restricted · 3.3.2 ICMP redirects off | `--tags cis_5_1,cis_3_3,cis_5_2` (the SSH timeouts share `cis_5_2` with P1 — re-running it is free, skipping it leaves them unset) |
 | **P3 — Evidence & hygiene** | 6.1.3 shadow perms · 1.5.1 core dumps · 1.7.1 banner | `--tags cis_6_1,cis_1_5,cis_1_7` |
 
@@ -238,13 +228,13 @@ Your tags are what make triage *executable*: `--tags cis_5_2` lets you push cred
 Copy your `fleet_hardening` role from [Mission 1.5](https://github.com/starfall-defence-corps/mission-1-5-clean-house) (or recreate it):
 
 ```bash
-mkdir -p roles
-cp -r /path/to/mission-1-5/workspace/roles/fleet_hardening roles/
+mkdir -p workspace/main-mission/roles
+cp -r /path/to/mission-1-5/workspace/roles/fleet_hardening workspace/main-mission/roles/
 ```
 
 ### Step 2: Create Inventory
 
-Create `inventory/hosts.yml` and `inventory/group_vars/` for the fleet.
+Create `workspace/main-mission/inventory/hosts.yml` and `workspace/main-mission/inventory/group_vars/` for the fleet.
 
 | Node | OS | Port |
 |------|----|------|
@@ -254,14 +244,14 @@ Create `inventory/hosts.yml` and `inventory/group_vars/` for the fleet.
 
 ### Step 3: Create ansible.cfg and site.yml
 
-Same patterns as previous missions.
+Create `workspace/main-mission/ansible.cfg` and `workspace/main-mission/site.yml`. Same patterns as previous missions.
 
 ### Step 4: Baseline Lynis Scan
 
 Before hardening, measure the current state:
 
 ```bash
-ansible all -i inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
+ansible all -i workspace/main-mission/inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
 ```
 
 Record the hardening index for each node in `COMPLIANCE.md`.
@@ -281,17 +271,17 @@ Add CIS Level 1 tasks to your role. At minimum:
 ### Step 6: Deploy and Rescan
 
 ```bash
-ansible-playbook -i inventory/hosts.yml site.yml
+ansible-playbook -i workspace/main-mission/inventory/hosts.yml workspace/main-mission/site.yml
 
 # Rescan
-ansible all -i inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
+ansible all -i workspace/main-mission/inventory/hosts.yml -m shell -a "lynis audit system --quick --no-colors 2>/dev/null | tail -5"
 ```
 
 Record the new hardening index. You should see a significant improvement.
 
 ### Step 7: Write Tests
 
-Create `tests/test_fleet_compliance.py` with **at least 10 test functions**:
+Create `workspace/main-mission/tests/test_fleet_compliance.py` with **at least 10 test functions**:
 
 - SSH root login disabled
 - SSH password auth disabled
@@ -307,28 +297,27 @@ Create `tests/test_fleet_compliance.py` with **at least 10 test functions**:
 ### Step 8: Create Molecule Configuration
 
 ```bash
-mkdir -p molecule/default
+mkdir -p workspace/main-mission/molecule/default
 ```
 
-Write `molecule/default/molecule.yml` using the pattern from Mission 2.1.
+Write `workspace/main-mission/molecule/default/molecule.yml` using the pattern from Mission 2.1.
 
 ### Step 9: Run Tests and Complete Report
 
 ```bash
 # Run tests against all fleet nodes
-pytest tests/ \
+pytest workspace/main-mission/tests/ \
   --hosts=ssh://cadet@localhost:2221,ssh://cadet@localhost:2222,ssh://cadet@localhost:2223 \
-  --ssh-identity-file=../.ssh/cadet_key \
-  --ssh-config=../.ssh/testinfra_ssh_config \
+  --ssh-identity-file=workspace/.ssh/cadet_key \
+  --ssh-config=workspace/.ssh/testinfra_ssh_config \
   --sudo -v
 ```
 
-Complete `COMPLIANCE.md` with all Lynis scores and control statuses.
+Complete `workspace/main-mission/COMPLIANCE.md` with all Lynis scores and control statuses.
 
 ### Step 10: Verify with ARIA
 
 ```bash
-cd ../..   # Back to mission root
 make test
 ```
 
