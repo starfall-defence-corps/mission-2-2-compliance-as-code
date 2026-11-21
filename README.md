@@ -71,6 +71,8 @@ make ssh-db        SSH into sdc-db (fleet)
 make ssh-comms     SSH into sdc-comms (fleet)
 ```
 
+> **Note:** `make submit` uses the [GitHub CLI](https://cli.github.com/) — install `gh` and run `gh auth login` once before your first submission.
+
 ## ARIA Review (Pull Request Workflow)
 
 **Locally** — run `make test` for instant verification.
